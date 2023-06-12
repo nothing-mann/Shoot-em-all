@@ -25,6 +25,10 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     [SerializeField]
     private int _lives = 3;
     private SpawnManager _spawnManager;
+    [SerializeField]
+    private GameObject _tripleShot;
+    [SerializeField]
+    private bool _tripleShotActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -72,8 +76,8 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
          *       transform.position.y = same
           */
         float outOfBoundsX = 11.32177f;
-        float outOfBoundsY = 7f;
-        float stopY = -5.0f;
+        float outOfBoundsY = 6f;
+        float stopY = -4.5f;
         if (transform.position.x >= outOfBoundsX)
         {
             transform.position = new Vector3(-outOfBoundsX, transform.position.y, 0);
@@ -96,7 +100,16 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     {
         //Debug.Log("Space key pressed!!");
         _canFire = Time.time + _fireRate;
-        Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
+
+        if(_tripleShotActive)
+        {
+            Instantiate(_tripleShot, transform.position + new Vector3(0.95f, 0, 0), Quaternion.identity);
+        }
+
+        else 
+        {
+            Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity); 
+        }
     }
 
     public void Damage()
@@ -107,6 +120,21 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
         {
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
+        }
+    }
+
+    public void TripleShotActive()
+    { 
+        _tripleShotActive = true;
+        StartCoroutine(TripleShotDisableRoutine());
+    }
+    
+    IEnumerator TripleShotDisableRoutine() 
+    {
+        while (_tripleShotActive == true)  
+        {
+            yield return new WaitForSeconds(5.0f);
+            _tripleShotActive = false;
         }
     }
 }
