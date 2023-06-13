@@ -17,6 +17,7 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
      */
     [SerializeField]
     private float _speed = 6f;
+    private float _originalSpeed;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -29,6 +30,8 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     private GameObject _tripleShot;
     [SerializeField]
     private bool _tripleShotActive = false;
+    [SerializeField]
+    private bool _speedUpActive = false; 
 
     // Start is called before the first frame update
     void Start()
@@ -136,5 +139,24 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
             yield return new WaitForSeconds(5.0f);
             _tripleShotActive = false;
         }
+    }
+
+    public void SpeedUpActive()
+    {
+        _speedUpActive = true;
+        StartCoroutine(SpeedUpActiveRoutine());
+    }
+
+    IEnumerator SpeedUpActiveRoutine()
+    {
+        while (_speedUpActive == true) 
+        {
+            _originalSpeed = _speed;
+            _speed = 20.0f;
+            yield return new WaitForSeconds(5.0f);
+            _speedUpActive = false;
+            _speed = _originalSpeed;
+        }
+        
     }
 }

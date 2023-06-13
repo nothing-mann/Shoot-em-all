@@ -8,6 +8,8 @@ public class Powerup : MonoBehaviour
 
     [SerializeField]
     private float _speed = 3.0f;
+    [SerializeField]
+    private int _powerupType = 0;
 
     void Start()
     {
@@ -31,7 +33,21 @@ public class Powerup : MonoBehaviour
             Player player = other.transform.GetComponent<Player>();
             if (player != null) 
             {
-                player.TripleShotActive();
+                switch(_powerupType)
+                {
+                    case 0:
+                        player.TripleShotActive();
+                        break;
+                    case 1:
+                        player.SpeedUpActive();
+                        break;
+                    case 2:
+                        Debug.Log("Shield");
+                        break;
+                    default:
+                        Debug.Log("Default Value");
+                        break;
+                }
             }
             Destroy(this.gameObject);
         }
