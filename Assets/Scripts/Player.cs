@@ -31,7 +31,12 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     [SerializeField]
     private bool _tripleShotActive = false;
     [SerializeField]
-    private bool _speedUpActive = false; 
+    private bool _speedUpActive = false;
+    [SerializeField]
+    private bool _shieldUpActive = false;
+    [SerializeField]
+    private GameObject _shield;
+
 
     // Start is called before the first frame update
     void Start()
@@ -117,6 +122,13 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
 
     public void Damage()
     {
+        if(_shieldUpActive == true)
+        {
+            _shieldUpActive = false;
+            _shield.SetActive(false);
+            return;
+        }
+
         _lives--;
 
         if(_lives <1)
@@ -158,5 +170,12 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
             _speed = _originalSpeed;
         }
         
+    }
+
+    public void ShieldUpActive()
+    {
+        _shieldUpActive= true;
+        //StartCoroutine(ShieldUpActiveRoutine());
+        _shield.SetActive(true);
     }
 }
