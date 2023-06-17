@@ -20,7 +20,7 @@ public class Powerup : MonoBehaviour
     void Update()
     {
         transform.Translate(new Vector3(0, -1.0f, 0)* _speed * Time.deltaTime);
-        if(transform.position.y < -4.5f)
+        if(transform.position.y < -6.5f)
         {
             Destroy(this.gameObject);
         }

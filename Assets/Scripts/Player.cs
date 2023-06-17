@@ -28,7 +28,7 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     private int _lives = 3;
     private SpawnManager _spawnManager;
     [SerializeField]
-    private GameObject _tripleShot;
+    private GameObject _tripleShotPrefab;
     [SerializeField]
     private bool _tripleShotActive = false;
     [SerializeField]
@@ -37,10 +37,6 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     private bool _shieldUpActive = false;
     [SerializeField]
     private GameObject _shield;
-
-    private bool _isDead = false;
-    //[SerializeField]
-    //private UIManager _uiManager;
 
     [SerializeField]
     private int _score;
@@ -121,12 +117,12 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
 
         if(_tripleShotActive)
         {
-            Instantiate(_tripleShot, transform.position + new Vector3(0.95f, 0, 0), Quaternion.identity);
+            Instantiate(_tripleShotPrefab, transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
         }
 
         else 
         {
-            Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity); 
+            Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
         }
     }
 
@@ -145,7 +141,6 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
         {
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
-            _isDead= true;
         }
     }
 
