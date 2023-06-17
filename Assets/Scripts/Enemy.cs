@@ -11,9 +11,16 @@ public class Enemy : MonoBehaviour
     private float _outOfBoundsY = -6.8f;
     [SerializeField]
     private GameObject _enemyPrefab;
+    [SerializeField]
+    private Player _player;
+    private int _randomRange;
+
     void Start()
     {
         transform.position = new Vector3(Random.Range(-8.0f, 8.0f), 4, 0);
+        _randomRange = Random.Range(5, 10);
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        transform.localScale = new Vector3(_randomRange*0.1f, _randomRange*0.1f, _randomRange*0.1f);
     }
 
     // Update is called once per frame
@@ -43,7 +50,12 @@ public class Enemy : MonoBehaviour
         else if(other.tag == "Laser")
         {
             Destroy(other.gameObject);
+            if(_player!= null)
+            {
+                _player.AddScore(Random.Range(5,10));
+            }
             Destroy(this.gameObject);
+            
         }
     }
 }

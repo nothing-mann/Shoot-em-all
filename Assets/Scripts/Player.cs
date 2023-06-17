@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //Custom Class ............ the class name should be the same as the file name for the script to work
 public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is what allows us to drag and drop the script and behaviours onto the game object
@@ -37,6 +38,13 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     [SerializeField]
     private GameObject _shield;
 
+    private bool _isDead = false;
+    //[SerializeField]
+    //private UIManager _uiManager;
+
+    [SerializeField]
+    private int _score;
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +52,7 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
         //take the current position = new Position(0,0,0)
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        //_uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -59,6 +68,7 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
            FireLaser(); 
             
         }
+        
     }
 
     void CreateMovement()
@@ -135,6 +145,7 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
         {
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
+            _isDead= true;
         }
     }
 
@@ -177,5 +188,15 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
         _shieldUpActive= true;
         //StartCoroutine(ShieldUpActiveRoutine());
         _shield.SetActive(true);
+    }
+
+    public int AddScore(int points) 
+    {
+        return _score += points;
+    }
+
+    public int GetScore()
+    {
+        return _score;
     }
 }
