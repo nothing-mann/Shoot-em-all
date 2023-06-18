@@ -37,6 +37,7 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     private bool _shieldUpActive = false;
     [SerializeField]
     private GameObject _shield;
+    private UIManager _uiManager;
 
     [SerializeField]
     private int _score;
@@ -48,7 +49,7 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
         //take the current position = new Position(0,0,0)
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-        //_uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -136,10 +137,12 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
         }
 
         _lives--;
+        _uiManager.UpdateLives(_lives);
 
         if(_lives <1)
         {
             _spawnManager.OnPlayerDeath();
+            _uiManager.GameOverText();
             Destroy(this.gameObject);
         }
     }
