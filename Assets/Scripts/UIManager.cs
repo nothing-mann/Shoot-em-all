@@ -19,10 +19,15 @@ public class UIManager : MonoBehaviour
     private Text _gameOverText;
     [SerializeField]
     private Text _restartText;
+    private GameManager _gameManager;
 
     void Start()
     {
-        
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if(_gameManager == null)
+        {
+            Debug.LogError("GameManager could not be initialized.");
+        }
     }
 
     // Update is called once per frame
@@ -45,6 +50,7 @@ public class UIManager : MonoBehaviour
     {
         //_gameOverText.text = "GAME OVER";
         //_restartText.text = "Press R to restart the game.";
+        _gameManager.GameOver();
 
         StartCoroutine(GameOverFlickerRoutine());
     }
