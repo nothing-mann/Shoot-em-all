@@ -14,13 +14,19 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private Player _player;
     private int _randomRange;
+    private Animator _enemyExplosionAnim;
 
     void Start()
     {
         transform.position = new Vector3(Random.Range(-8.0f, 8.0f), 4, 0);
         _randomRange = Random.Range(5, 10);
         _player = GameObject.Find("Player").GetComponent<Player>();
+        if(_player == null)
+        {
+            Debug.LogError("Error!! Player gameobject not found");
+        }
         transform.localScale = new Vector3(_randomRange*0.1f, _randomRange*0.1f, _randomRange*0.1f);
+        _enemyExplosionAnim = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -44,7 +50,9 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-            Destroy(this.gameObject);
+            _enemyExplosionAnim.SetTrigger("OnEnemyDeath");
+            _speed = _speed/2;
+            Destroy(this.gameObject, 1.3f);
         }
 
         else if(other.tag == "Laser")
@@ -54,7 +62,9 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddScore(Random.Range(5,10));
             }
-            Destroy(this.gameObject);
+            _enemyExplosionAnim.SetTrigger("OnEnemyDeath");
+            _speed = _speed/2;
+            Destroy(this.gameObject, 1.3f);
             
         }
     }
