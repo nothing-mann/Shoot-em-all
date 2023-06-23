@@ -38,6 +38,10 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     [SerializeField]
     private GameObject _shield;
     private UIManager _uiManager;
+    [SerializeField]
+    private GameObject _rightDamage;
+    [SerializeField]
+    private GameObject _leftDamage;
 
     [SerializeField]
     private int _score;
@@ -136,7 +140,17 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
             return;
         }
 
+
         _lives--;
+
+        if(_lives == 2)
+        {
+            _leftDamage.SetActive(true);
+        }
+        if(_lives == 1)
+        {
+            _rightDamage.SetActive(true);
+        }
         _uiManager.UpdateLives(_lives);
 
         if(_lives <1)
