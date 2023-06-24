@@ -42,7 +42,9 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     private GameObject _rightDamage;
     [SerializeField]
     private GameObject _leftDamage;
-
+    private AudioSource _laserAudio;
+    [SerializeField]
+    private AudioClip _laserClip;
     [SerializeField]
     private int _score;
 
@@ -54,6 +56,15 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _laserAudio = GetComponent<AudioSource>();
+        if(_laserAudio == null)
+        {
+            Debug.LogError("Audiosource in the player is null");
+        }
+        else
+        {
+            _laserAudio.clip = _laserClip;
+        }
     }
 
     // Update is called once per frame
@@ -129,6 +140,8 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
         {
             Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
         }
+        _laserAudio.Play();
+        
     }
 
     public void Damage()
@@ -211,4 +224,5 @@ public class Player : MonoBehaviour //MonoBehaviour is Unity specific and it is 
     {
         return _score;
     }
+
 }

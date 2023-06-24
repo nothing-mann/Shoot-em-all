@@ -15,15 +15,27 @@ public class Enemy : MonoBehaviour
     private Player _player;
     private int _randomRange;
     private Animator _enemyExplosionAnim;
+    [SerializeField]
+    private AudioClip _enemyClip;
+    private AudioSource _enemyExplosion;
 
     void Start()
     {
         transform.position = new Vector3(Random.Range(-8.0f, 8.0f), 4, 0);
         _randomRange = Random.Range(5, 10);
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _enemyExplosion = GetComponent<AudioSource>();
         if(_player == null)
         {
             Debug.LogError("Error!! Player gameobject not found");
+        }
+        if(_enemyExplosion == null)
+        {
+            Debug.LogError("AudioSource in Enemy is null");
+        }
+        else
+        {
+            _enemyExplosion.clip = _enemyClip;
         }
         transform.localScale = new Vector3(_randomRange*0.1f, _randomRange*0.1f, _randomRange*0.1f);
         _enemyExplosionAnim = gameObject.GetComponent<Animator>();
@@ -53,6 +65,7 @@ public class Enemy : MonoBehaviour
             _enemyExplosionAnim.SetTrigger("OnEnemyDeath");
             _speed = _speed/2;
             Destroy(this.gameObject, 1.3f);
+            _enemyExplosion.Play();
         }
 
         else if(other.tag == "Laser")
@@ -65,6 +78,7 @@ public class Enemy : MonoBehaviour
             _enemyExplosionAnim.SetTrigger("OnEnemyDeath");
             _speed = _speed/2;
             Destroy(this.gameObject, 1.3f);
+            _enemyExplosion.Play();
             
         }
     }

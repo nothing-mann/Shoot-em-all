@@ -10,16 +10,19 @@ public class Powerup : MonoBehaviour
     private float _speed = 3.0f;
     [SerializeField]
     private int _powerupType = 0;
+    [SerializeField]
+    private AudioClip _powerupClip;
 
     void Start()
     {
-        
+       
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.Translate(new Vector3(0, -1.0f, 0)* _speed * Time.deltaTime);
+       
         if(transform.position.y < -6.5f)
         {
             Destroy(this.gameObject);
@@ -31,6 +34,7 @@ public class Powerup : MonoBehaviour
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
+            AudioSource.PlayClipAtPoint(_powerupClip, transform.position);
             if (player != null) 
             {
                 switch(_powerupType)
@@ -50,6 +54,7 @@ public class Powerup : MonoBehaviour
                 }
             }
             Destroy(this.gameObject);
+            
         }
     }
 }
